@@ -41,7 +41,7 @@ function mount_nas {
     else
         # whatever you want to do when array does not contains value
         echo "NAS selected: ${SELECTED_NAS} is NOT valid!!!"
-        break;
+        exit
     fi
 
     smbclient -L $NAS_URL -U=share%share | grep -i ${NAS_SHARE_PATH}   
@@ -56,7 +56,7 @@ function mount_nas {
         fi
     else
         echo "Nas is ${NAS_URI} offline"
-        break;
+        exit
     fi
 }
 
@@ -70,13 +70,13 @@ create_menu ()
     if [ "$REPLY" -eq $(($#+1)) ];
     then
       echo "Exiting..."
-      break;
+      exit
     # elif [ 1 -le "$REPLY" ] && [ "$REPLY" -le $(($#-1)) ];
     elif [ 1 -le "$REPLY" ] && [ "$REPLY" -le $(($#)) ];
     then
       echo "You selected NAS: $option"    
       mount_nas $option
-      break;
+      exit
     else
       echo "Incorrect Input: Select a number 1-$#"
     fi
