@@ -14,6 +14,13 @@ NAS_MOUNT_NAME_PATH_LIST+=( ["nas"]="NAS" ["nasvm"]="NASVM" ["nasbox"]="NASBOX" 
 
 SELECTED_NAS=""
 
+function smbclient_installed() {
+    if ! command -v smbclient &> /dev/null
+    then
+        echo "smbclient command could not be found"
+        exit
+    fi
+}
 
 function is_mounted() {
     # mount | awk -v DIR="$1" '{if ($3 == DIR) { exit 0}} ENDFILE{exit -1}'
@@ -86,6 +93,7 @@ create_menu ()
 
 if [ $# -eq 0 ]; then
     >&2 echo "No arguments provided"
+    smbclient_installed
     create_menu "${NAS_LIST[@]}"
 else
     mount_nas $1
